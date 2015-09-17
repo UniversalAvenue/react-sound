@@ -1,5 +1,5 @@
 import React from 'react';
-import Sound from 'react-sound';
+import { SoundAsset, Sound } from 'react-sound';
 import PlayerControls from './PlayerControls';
 import SongSelector from './SongSelector';
 import songs from './songs';
@@ -16,6 +16,19 @@ export default class Example extends React.Component {
   }
 
   render() {
+    const currentSong =  this.state.currentSong;
+    let song = false;
+    if (currentSong) {
+      const asset = new SoundAsset({ url: currentSong.url,
+        id: currentSong.title,
+        onfinish: () => this.setState({ playStatus: Sound.status.STOPPED }),
+      });
+      song = <Sound
+        asset={asset}
+        volume={50}
+        playStatus={this.state.playStatus}
+        playFromPosition={this.state.position}/>;
+    }
     return <div>
       <SongSelector
         songs={songs}
@@ -31,14 +44,7 @@ export default class Example extends React.Component {
         onSeek={position => this.setState({ position })}
         duration={this.state.currentSong ? this.state.currentSong.duration : 0}
         position={this.state.position} />
-      {this.state.currentSong &&
-        <Sound
-          url={this.state.currentSong.url}
-          playStatus={this.state.playStatus}
-          playFromPosition={this.state.position}
-          onLoading={({bytesLoaded, bytesTotal}) => console.log(`${bytesLoaded / bytesTotal * 100}% loaded`)}
-          onPlaying={({position}) => console.log(position)}
-          onFinishedPlaying={() => this.setState({playStatus: Sound.status.STOPPED})} />}
+      {song}
     </div>;
   }
 
