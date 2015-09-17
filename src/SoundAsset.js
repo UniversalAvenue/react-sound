@@ -38,6 +38,15 @@ export default class SoundAsset {
     });
   }
 
+  onPosition(position) {
+    return this.getSound()
+      .then((sound) => {
+        return new Promise((resolve) => {
+          sound.onPosition(position, (reached) => resolve(reached));
+        });
+      })
+  }
+
   getSound() {
     return this._sound;
   }

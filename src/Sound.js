@@ -1,8 +1,6 @@
 import React, {PropTypes as T} from 'react';
 import { SoundAsset } from './SoundAsset';
 
-function noop() {}
-
 const playStatuses = {
   PLAYING: 'PLAYING',
   STOPPED: 'STOPPED',
@@ -16,7 +14,6 @@ export default class Sound extends React.Component {
     asset: T.instanceOf(SoundAsset),
     playStatus: T.oneOf(Object.keys(playStatuses)).isRequired,
     playFromPosition: T.number,
-    stopAt: T.number,
     volume: T.number,
 
   };
